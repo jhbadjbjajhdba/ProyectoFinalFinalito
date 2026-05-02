@@ -193,23 +193,87 @@ canvas_seleccion.image = fondo_seleccion
 
 wispers= ["Armadillo", "Raton", "Gato", "Zorro", "Dragon", "Caballo", "Rana", "Pinguino", "Pato", "Conejo", "Polilla", "Ardilla", "Huron", "serpiente", "Tortuga"]
 tarjetaWispers = [
-    armadillo= tkinter.PhotoImage(file="i\TPST1.png"),
-    raton= tkinter.PhotoImage(file="i\TPST2.png"),
-    gato= tkinter.PhotoImage(file="i\TPST3.png"),
-    zorro= tkinter.PhotoImage(file="i\TPI1.png"),
-    dragon= tkinter.PhotoImage(file="i\TPI2.png"),
-    caballo= tkinter.PhotoImage(file="i\TPI3.png"),
-    rana= tkinter.PhotoImage(file="i\TPN1.png"),
-    pinguino= tkinter.PhotoImage(file="i\TPN2.png"),
-    pato= tkinter.PhotoImage(file="i\TPN3.png"),
-    conejo= tkinter.PhotoImage(file="i\TPE1.png"),
-    polilla= tkinter.PhotoImage(file="i\TPE2.png"),
-    ardilla= tkinter.PhotoImage(file="i\TPE3.png"),
-    huron= tkinter.PhotoImage(file="i\TPSY1.png"),
-    serpiente= tkinter.PhotoImage(file="i\TPSY2.png"),
-    tortuga= tkinter.PhotoImage(file="i\TPSY3.png")
+    tkinter.PhotoImage(file="i\TPST1.png"),
+    tkinter.PhotoImage(file="i\TPST2.png"),
+    tkinter.PhotoImage(file="i\TPST3.png"),
+    tkinter.PhotoImage(file="i\TPI1.png"),
+    tkinter.PhotoImage(file="i\TPI2.png"),
+    tkinter.PhotoImage(file="i\TPI3.png"),
+    tkinter.PhotoImage(file="i\TPN1.png"),
+    tkinter.PhotoImage(file="i\TPN2.png"),
+    tkinter.PhotoImage(file="i\TPN3.png"),
+    tkinter.PhotoImage(file="i\TPE1.png"),
+    tkinter.PhotoImage(file="i\TPE2.png"),
+    tkinter.PhotoImage(file="i\TPE3.png"),
+    tkinter.PhotoImage(file="i\TPSY1.png"),
+    tkinter.PhotoImage(file="i\TPSY2.png"),
+    tkinter.PhotoImage(file="i\TPSY3.png")
 ]
+aliados= [None, None, None]
+botones_borrar = {}
+ 
+#Funciones de la seleccion de wispers
+ 
+def espaciosvacios(i, aliados):
+    
+    if(i < 3):
+        if(aliados[i] == None):
+            return aliados[i]
+        else:
+            return espaciosvacios(i+1)
+    else:
+        return None    
+    
+def eliminarwisper(i):
+    global aliados, botones_borrar
+    aliados[i] = None
+    if i in botones_borrar:
+        botones_borrar[i].destroy()
+        del botones_borrar[i]
+    
+def seleccionpersonaje(wisper):
+    global aliados
+    global wispers
+    i=0
+    espacio = espaciosvacios(i, aliados)
+    if espacio is not None:
+        aliados[espacio] = wispers[wisper]
+        boton_borrar = tkinter.Button(
+            pantalla_seleccion,
+            image=tarjetaWispers[wisper],
+            command=lambda i=espacio: eliminarwisper(i)
+        )
+        botones_borrar[espacio] = boton_borrar
+        # Coloca el botón en la pantalla (ajusta coordenadas)
+        canvas_seleccion.create_window(400, 150 + espacio*60, window=boton_borrar)
+    else:
+        print("No hay espacio para más wispers")
+
+
+
+#La imagen para los botones de seleccion de wispers, que se usará para los 15 botones
+select= tkinter.PhotoImage(file="i/bselect.png")
 # Aquí irán los 15 botones de wispers en cuadrícula
+botonarmadillo = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(0)).place(x=95, y=110)
+botonraton = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(1)).place(x=244, y=110)
+botongato = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(2)).place(x=393, y=110)
+botonzorro = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(3)).place(x=95, y=255)
+botondragon = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(4)).place(x=244, y=255)
+botoncaballo = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(5)).place(x=393, y=255)
+botonrana = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(6)).place(x=95, y=399)
+botonpinguino = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(7)).place(x=244, y=399)
+botonpato = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(8)).place(x=393, y=399) 
+botonconejo = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(9)).place(x=95, y=543)
+botonpolilla = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(10)).place(x=244, y=543)
+botonardilla = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(11)).place(x=393, y=543)
+botonhuron = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(12)).place(x=95, y=687)
+botonserpiente = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(13)).place(x=244, y=687)
+botontortuga = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(14)).place(x=393, y=687)
+
+
+
+
+
 
 # Mostrar inicio al arrancar
 pantalla_inicio.tkraise()

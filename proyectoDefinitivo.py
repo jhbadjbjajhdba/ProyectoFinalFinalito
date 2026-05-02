@@ -193,21 +193,21 @@ canvas_seleccion.image = fondo_seleccion
 
 wispers= ["Armadillo", "Raton", "Gato", "Zorro", "Dragon", "Caballo", "Rana", "Pinguino", "Pato", "Conejo", "Polilla", "Ardilla", "Huron", "serpiente", "Tortuga"]
 tarjetaWispers = [
-    tkinter.PhotoImage(file="i\TPST1.png"),
-    tkinter.PhotoImage(file="i\TPST2.png"),
-    tkinter.PhotoImage(file="i\TPST3.png"),
-    tkinter.PhotoImage(file="i\TPI1.png"),
-    tkinter.PhotoImage(file="i\TPI2.png"),
-    tkinter.PhotoImage(file="i\TPI3.png"),
-    tkinter.PhotoImage(file="i\TPN1.png"),
-    tkinter.PhotoImage(file="i\TPN2.png"),
-    tkinter.PhotoImage(file="i\TPN3.png"),
-    tkinter.PhotoImage(file="i\TPE1.png"),
-    tkinter.PhotoImage(file="i\TPE2.png"),
-    tkinter.PhotoImage(file="i\TPE3.png"),
-    tkinter.PhotoImage(file="i\TPSY1.png"),
-    tkinter.PhotoImage(file="i\TPSY2.png"),
-    tkinter.PhotoImage(file="i\TPSY3.png")
+    tkinter.PhotoImage(file="i/TPST1.png"),
+    tkinter.PhotoImage(file="i/TPST2.png"),
+    tkinter.PhotoImage(file="i/TPST3.png"),
+    tkinter.PhotoImage(file="i/TPI1.png"),
+    tkinter.PhotoImage(file="i/TPI2.png"),
+    tkinter.PhotoImage(file="i/TPI3.png"),
+    tkinter.PhotoImage(file="i/TPN1.png"),
+    tkinter.PhotoImage(file="i/TPN2.png"),
+    tkinter.PhotoImage(file="i/TPN3.png"),
+    tkinter.PhotoImage(file="i/TPE1.png"),
+    tkinter.PhotoImage(file="i/TPE2.png"),
+    tkinter.PhotoImage(file="i/TPE3.png"),
+    tkinter.PhotoImage(file="i/TPSY1.png"),
+    tkinter.PhotoImage(file="i/TPSY2.png"),
+    tkinter.PhotoImage(file="i/TPSY3.png")
 ]
 aliados= [None, None, None]
 botones_borrar = {}
@@ -218,11 +218,11 @@ def espaciosvacios(i, aliados):
     
     if(i < 3):
         if(aliados[i] == None):
-            return aliados[i]
+            return i
         else:
-            return espaciosvacios(i+1)
+            return espaciosvacios(i+1, aliados)
     else:
-        return None    
+        return 3   
     
 def eliminarwisper(i):
     global aliados, botones_borrar
@@ -236,7 +236,7 @@ def seleccionpersonaje(wisper):
     global wispers
     i=0
     espacio = espaciosvacios(i, aliados)
-    if espacio is not None:
+    if (espacio < 3):
         aliados[espacio] = wispers[wisper]
         boton_borrar = tkinter.Button(
             pantalla_seleccion,
@@ -245,11 +245,21 @@ def seleccionpersonaje(wisper):
         )
         botones_borrar[espacio] = boton_borrar
         # Coloca el botón en la pantalla (ajusta coordenadas)
-        canvas_seleccion.create_window(400, 150 + espacio*60, window=boton_borrar)
+        canvas_seleccion.create_window(800, 120 + espacio*200, window=boton_borrar)
     else:
-        print("No hay espacio para más wispers")
+        # Crear etiqueta en la esquina superior derecha
+        mensajeeL = tkinter.Label(
+        pantalla_seleccion,
+        text="¡Límite de aliados alcanzado!",
+        fg="red",
+        bg="black",
+        font=("Arial", 12, "bold")
+        )
+        # Colocar en la esquina superior derecha
+        canvas_seleccion.create_window(915, 5, window=mensajeeL, anchor="ne")
 
-
+        # Borrar después de 3 segundos (3000 ms)
+        ventanaPrincipal.after(3000, mensajeeL.destroy)
 
 #La imagen para los botones de seleccion de wispers, que se usará para los 15 botones
 select= tkinter.PhotoImage(file="i/bselect.png")
@@ -270,8 +280,32 @@ botonhuron = tkinter.Button(pantalla_seleccion, image=select, command=lambda: se
 botonserpiente = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(13)).place(x=244, y=687)
 botontortuga = tkinter.Button(pantalla_seleccion, image=select, command=lambda: seleccionpersonaje(14)).place(x=393, y=687)
 
+#boton inicio y su función:
+def continuar_seleccion():
+    global aliados
+    i=0
+    espacios= espaciosvacios(i, aliados)
+    if(espacios == 3):
+        print("¡Personajes seleccionados!")
+        print("Aliados:", aliados)
+        
+    else:
+        # Crear etiqueta en la esquina superior derecha
+        mensajeL = tkinter.Label(
+            pantalla_seleccion,
+            text="Selecciona 3 aliados antes de continuar",
+            fg="red",
+            bg="black",
+            font=("Arial", 12, "bold")
+        )
+        # Colocar en la esquina superior derecha
+        canvas_seleccion.create_window(915, 5, window=mensajeL, anchor="ne")
 
-
+        # Borrar después de 3 segundos (3000 ms)
+        ventanaPrincipal.after(3000, mensajeL.destroy)
+        
+next= tkinter.PhotoImage(file="i/next.png")
+boton_next = tkinter.Button(pantalla_seleccion, image=next, command=lambda: continuar_seleccion()).place(x=700, y=620)
 
 
 
